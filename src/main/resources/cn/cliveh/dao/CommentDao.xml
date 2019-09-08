@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.cliveh.dao.CommentDao">
+    <resultMap id="commentMap" type="comment">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parentId"/>
+        <result property="articleId" column="articleId"/>
+        <result property="answererId" column="answererId"/>
+        <result property="respondentId" column="respondentId"/>
+        <result property="commentDate" column="commentDate"/>
+        <result property="commentContent" column="commentContent"/>
+        <collection property="user" ofType="user">
+            <id property="id" column="uid"/>
+            <result property="username" column="username"/>
+            <result property="websiteUrl" column="websiteUrl"/>
+            <result property="address" column="address"/>
+        </collection>
+    </resultMap>
+
+    <!--保存评论-->
+    <insert id="saveComment" parameterType="comment">
+        insert into comment (
+        parentId,
+        articleId,
+        answererId,
+        respondentId,
+        commentDate,
+        commentContent
+        ) values (
+        #{parentId},
+        #{articleId},
+        #{answererId},
+        #{respondentId},
+        #{commentDate},
+        #{commentContent}
+        )
+    </insert>
+
+    <!--根据文章id查找文章里面评论-->
+    <select id="findCommentByArticleId" parameterType="int" resultMap="commentMap">
+        select u.username,u.id uid,u.websiteUrl,u.address,c.* from comment c
+        right outer join user_comment uc on c.id = uc.cid
+        right outer join user u on uc.uid = u.id
+        where c.articleId = #{articleId}
+        order by c.id desc
+    </select>
+
+    <!--获取执行时数据库中的最大的评论id-->
+    <select id="getCommentMaxId" resultType="int">
+        select max(id) from comment;
+    </select>
+
+    <!--保存用户评论外键约束-->
+    <insert id="saveUserComment">
+        insert into user_comment (uid, cid) values (#{uid}, #{cid})
+    </insert>
+
+    <!--查询评论及其用户信息-->
+    <select id="findCommentAndUser" resultMap="commentMap">
+        select u.username,u.id uid,u.websiteUrl,u.address,c.* from comment c
+        right outer join user_comment uc on c.id = uc.cid
+        right outer join user u on uc.uid = u.id
+        where c.id = #{id} and c.articleId = #{articleId}
+        order by c.id desc
+    </select>
+
+    <!--获取数据库中评论总数-->
+    <select id="getCommentTotalCount" resultType="int">
+        select count(*) from comment;
+    </select>
+
+    <!--根据文章id获取数据库中评论数-->
+    <select id="getCommentCountByArticleId" parameterType="int" resultType="int">
+        select count(*) from comment where articleId = #{articleId};
+    </select>
+
+</mapper>

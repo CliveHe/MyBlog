@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.cliveh.dao.ArticleDao">
+    <resultMap id="articleMap" type="article">
+        <id property="id" column="id"/>
+        <result property="articleTitle" column="articleTitle"/>
+        <result property="articleAbstract" column="articleAbstract"/>
+        <result property="articleAuthor" column="articleAuthor"/>
+        <result property="articleImageUrl" column="articleImageUrl"/>
+        <result property="articleContent" column="articleContent"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="pageview" column="pageview"/>
+        <result property="lastArticleId" column="lastArticleId"/>
+        <result property="nextArticleId" column="nextArticleId"/>
+        <collection property="tags" ofType="tags">
+            <id property="tagId" column="tagId"/>
+            <result property="tagName" column="tagName"/>
+            <result property="tagSize" column="tagSize"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="articleAndMarkdownMap" type="article">
+        <id property="id" column="id"/>
+        <result property="articleTitle" column="articleTitle"/>
+        <result property="articleAbstract" column="articleAbstract"/>
+        <result property="articleAuthor" column="articleAuthor"/>
+        <result property="articleImageUrl" column="articleImageUrl"/>
+        <result property="articleContent" column="articleContent"/>
+        <result property="markdown" column="markdown"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="pageview" column="pageview"/>
+        <result property="lastArticleId" column="lastArticleId"/>
+        <result property="nextArticleId" column="nextArticleId"/>
+        <collection property="tags" ofType="tags">
+            <id property="tagId" column="tagId"/>
+            <result property="tagName" column="tagName"/>
+            <result property="tagSize" column="tagSize"/>
+        </collection>
+    </resultMap>
+
+    <!--查询全部文章-->
+    <select id="findAllArticle" resultMap="articleMap">
+        select a.*,t.tagId,t.tagName,t.tagSize from article a
+        left outer join article_tags ta on a.id = ta.aid
+        left outer join tags t on t.tagId = ta.tid
+        order by a.id desc
+    </select>
+
+    <!--根据日期归档文章-->
+    <select id="findArticlesByDate" resultType="article">
+        select id,publishDate,articleTitle from article order by  publishDate desc
+    </select>
+
+    <!--根据id查询文章-->
+    <select id="findArticleById" parameterType="int" resultMap="articleMap">
+        select a.*,t.tagId,t.tagName,t.tagSize from article a
+        left outer join article_tags ta on a.id = ta.aid
+        left outer join tags t on t.tagId = ta.tid
+        where a.id=#{id}
+    </select>
+
+    <!--根据id查询文章，包含markdown-->
+    <select id="findArticleAndMarkdownById" parameterType="int" resultMap="articleAndMarkdownMap">
+        select a.*,t.tagId,t.tagName,t.tagSize from article a
+        left outer join article_tags ta on a.id = ta.aid
+        left outer join tags t on t.tagId = ta.tid
+        where a.id=#{id}
+    </select>
+
+    <!--根据id获取文章标题-->
+    <select id="findArticleTitleById" parameterType="int" resultType="String">
+        select articleTitle from article where id = #{id}
+    </select>
+
+    <!--保存文章-->
+    <insert id="saveArticle" parameterType="article">
+        insert into article (
+            articleTitle,
+            articleAbstract,
+            articleAuthor,
+            articleImageUrl,
+            articleContent,
+            markdown,
+            publishDate,
+            pageview,
+            lastArticleId,
+            nextArticleId
+        ) values (
+            #{articleTitle},
+            #{articleAbstract},
+            #{articleAuthor},
+            #{articleImageUrl},
+            #{articleContent},
+            #{markdown},
+            #{publishDate},
+            #{pageview},
+            #{lastArticleId},
+            #{nextArticleId}
+        )
+    </insert>
+
+    <!--保存文章标签-->
+    <insert id="saveArticleTags" parameterType="ArticleTags">
+        insert into article_tags (aid, tid) values (#{aid}, #{tid})
+    </insert>
+
+    <!--获取执行时数据库中的最大的文章id-->
+    <select id="getArticleMaxId" resultType="int">
+        select max(id) from article
+    </select>
+
+    <!--更新文章的上一篇的id-->
+    <update id="updateArticleLastId" parameterType="article">
+        update article set lastArticleId=#{lastArticleId} where id=#{id}
+    </update>
+
+    <!--更新文章的下一篇的id-->
+    <update id="updateArticleNextId" parameterType="article">
+        update article set nextArticleId=#{nextArticleId} where id=#{id}
+    </update>
+
+    <!--按id删除文章-->
+    <delete id="deleteArticleById" parameterType="int">
+        delete from article where id = #{id}
+    </delete>
+
+    <!--通过文章id删除对应的article_tags外键约束-->
+    <delete id="deleteArticleAndTagsByArticleId" parameterType="int">
+        delete from article_tags where aid = #{aid}
+    </delete>
+
+    <!--文章总篇数-->
+    <select id="getArticleTotalCount" resultType="int">
+        select count(*) from article
+    </select>
+
+    <!--查询最近的10篇文章-->
+    <select id="findRecentArticle" resultType="article">
+        select id,articleTitle from article limit 0,10
+    </select>
+
+    <!--根据id更新文章-->
+    <update id="updateArticle" parameterType="article">
+        update article set
+            articleTitle = #{articleTitle},
+            articleAbstract = #{articleAbstract},
+            articleAuthor = #{articleAuthor},
+            articleImageUrl = #{articleImageUrl},
+            articleContent = #{articleContent},
+            markdown = #{markdown},
+            publishDate = #{publishDate}
+            where id = #{id}
+    </update>
+
+    <!--更新文章浏览量-->
+    <update id="updateArticleViewsById" parameterType="int">
+        update article set pageview = pageview+1 where id = #{articleId};
+    </update>
+
+    <!--根据文章id获取文章浏览量-->
+    <select id="getArticleViewsById" parameterType="int" resultType="int">
+        select pageview from article where id = #{articleId};
+    </select>
+
+    <!--将Redis里的浏览量信息同步到数据库里-->
+    <update id="updateArticleViews">
+        update article set pageview = #{pageview} where id = #{articleId};
+    </update>
+
+    <!--获取所有文章的id-->
+    <select id="findAllArticleId" resultType="int">
+        select id from article;
+    </select>
+
+</mapper>

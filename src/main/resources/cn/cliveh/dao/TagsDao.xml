@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.cliveh.dao.TagsDao">
+    <resultMap id="tagsMap" type="tags">
+        <id property="tagId" column="tagId"/>
+        <result property="tagName" column="tagName"/>
+        <result property="tagSize" column="tagSize"/>
+        <collection property="articles" ofType="article">
+            <id property="id" column="id"/>
+            <result property="articleTitle" column="articleTitle"/>
+            <!--<result property="publishDate" column="publishDate"/>-->
+            <!--<result property="articleUrl" column="articleUrl"/>-->
+            <!--<result property="pageview" column="pageview"/>-->
+        </collection>
+    </resultMap>
+
+    <!--获取所有的标签-->
+    <select id="findAllTag" resultType="tags">
+        select * from tags order by tagSize desc
+    </select>
+    
+    <!--获取标签数量-->
+    <select id="getTagCount" resultType="int">
+        select count(*) from tags
+    </select>
+
+    <!--获取某一个标签下的所有文章-->
+    <select id="findArticlesOnTag" resultMap="tagsMap">
+        select t.*, a.id, a.articleTitle from article a
+        right outer join article_tags ta on a.id = ta.aid
+        right outer join tags t on t.tagId = ta.tid
+    </select>
+
+    <!--用于插入一次数据tagSize就+1-->
+    <update id="updateTagSize" parameterType="int">
+        update tags set tagSize=tagSize+1 where tagId=#{tagId}
+    </update>
+
+    <!--保存新的标签-->
+    <insert id="saveTag" parameterType="String">
+        insert into tags (tagName, tagSize) values (#{tagName}, 0)
+    </insert>
+
+    <!--获取执行时数据库中标签的最大id-->
+    <select id="getTagMaxId" resultType="int">
+        select max(tagId) from tags
+    </select>
+
+</mapper>
