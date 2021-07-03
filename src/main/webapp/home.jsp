@@ -8,13 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html>
 <head>
-
+    <meta name="keywords" content="何智强,何智强的个人博客,cliveh.cn,Clive' Blog,cliveh">
+    <meta name="description" content="何智强,何智强的个人博客,cliveh.cn,Clive' Blog,cliveh">
+    <meta name="author" content="何智强,cliveh.cn">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <link rel="shortcut icon" href="img/icon.jpg">
 
     <title>
@@ -35,8 +35,10 @@
 
     <!-- Pygments Highlight CSS -->
 
-    <link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
-    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">
+    <!--<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">-->
+    <link rel="stylesheet" href="css/github.min.css">
+    <!--<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">-->
+    <script src="js/highlight.min.js">
         // highlight
         hljs.initHighlightingOnLoad();
     </script>
@@ -68,7 +70,8 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header {
-        background-image: url('${pageContext.request.contextPath}/img/header_img/home.jpg')
+        background-image: url('https://cn-cliveh-bucket-1256393662.cos.ap-guangzhou.myqcloud.com/article_header/home.jpg')
+    <%--${pageContext.request.contextPath}/img/header_img/home.jpg--%>
         /*config*/
     }
 
@@ -88,17 +91,11 @@
                         </h1>
                         <!--<hr class="small">-->
 
-                        <!-- <span id="jrsc">正在加载今日诗词....</span>
-                        <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-                        <script type="text/javascript">
-                            jinrishici.load(function (result) {
-                                // 自己的处理逻辑
-                                console.log(result.data.content, result.data.origin.author, result.data.origin.dynasty);
-                                var string = result.data.content + "  ——" + result.data.origin.dynasty + "·" + result.data.origin.author;
-                                document.getElementById("jrsc").innerHTML = string;
-                            });
-                        </script> -->
                         <span class="subheading">何智強的个人博客</span>
+
+                        <br>
+                        <span id="weather"></span>
+
                     </div>
 
 
@@ -140,6 +137,9 @@
                     </li>
                     <li>
                         <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/fc/">怀旧游戏机</a>
                     </li>
 
                 </ul>
@@ -436,11 +436,39 @@
 <!-- jQuery -->
 <script src="js/jquery.min.js"></script>
 
+<script src="js/jquery.cookie.js"></script>
+
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="js/hux-blog.min.js"></script>
+
+<%--加载天气--%>
+<script>
+
+    //第一次加载页面时
+    if ("${todayWeather}"===""){
+
+        $("#weather").html("正在加载天气预报....<br>");
+
+        //页面加载1000毫秒后执行一次
+        setTimeout(function () {
+            //refresh值为no就不刷新
+            if ($.cookie('refresh')!="no"){
+                $.cookie('refresh','no');
+                //刷新当前页面
+                location.reload();
+            }else {
+                $("#weather").remove()
+            }
+        },1000)
+
+    }else {
+        $("#weather").html("${todayWeather}<br>${tomorrowWeather}")
+    }
+
+</script>
 
 <!-- async load function -->
 <script>
