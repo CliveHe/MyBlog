@@ -9,15 +9,17 @@
 <html>
 <!-- Head tag -->
 <head>
+    <meta name="keyword" content="何智强,<c:forEach var="tags" items="${allTag}">${tags.tagName},</c:forEach>文章标签">
+    <meta name="description" content="何智强,文章标签,何智强的个人博客,cliveh.cn,Clive' Blog,cliveh">
+    <meta name="author" content="何智强,cliveh.cn">
     <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword" content="">
-    <link rel="shortcut icon" href="/img/icon.jpg">
+    <link rel="shortcut icon" href="img/icon.jpg">
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script async defer src="js/buttons.js"></script>
     <title>
 
         Tags - 何智强 | Blog
@@ -36,8 +38,10 @@
 
     <!-- Pygments Highlight CSS -->
 
-    <link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
-    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">
+    <!--<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">-->
+    <link rel="stylesheet" href="css/github.min.css">
+    <!--<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">-->
+    <script src="js/highlight.min.js">
         // highlight
         hljs.initHighlightingOnLoad();
     </script>
@@ -149,6 +153,9 @@
                     <li>
                         <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/fc/">怀旧游戏机</a>
+                    </li>
 
                 </ul>
             </div>
@@ -203,7 +210,7 @@
                 <c:forEach var="tags" items="${allTag}">
                     <a href="#${tags.tagName}" title="${tags.tagName}" rel="${tags.tagSize}">
                             ${tags.tagName}
-                            <sup>${tags.tagSize}</sup>
+                        <sup>${tags.tagSize}</sup>
                     </a>
                 </c:forEach>
 
@@ -222,7 +229,7 @@
                         <div class="post-preview">
                             <a href="${pageContext.request.contextPath}/article?articleId=${article.id}">
                                 <h2 class="post-title">
-                                    ${article.articleTitle}
+                                        ${article.articleTitle}
                                 </h2>
                             </a>
                         </div>
@@ -313,7 +320,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://cliveh.cn/js/jquery.tagcloud.js",function(){
+        async("https://cliveh.cn/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'}

@@ -8,16 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html>
 <!-- Head tag -->
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
+    <meta name="keywords" content="何智强,关于何智强,何智强的个人博客,cliveh.cn,Clive' Blog,cliveh">
+    <meta name="description" content="何智强,关于何智强,何智强的个人博客,cliveh.cn,Clive' Blog,cliveh">
+    <meta name="author" content="何智强,cliveh.cn">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword" content="">
-    <link rel="shortcut icon" href="/img/icon.jpg">
+    <link rel="shortcut icon" href="img/icon.jpg">
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--<script async defer src="https://buttons.github.io/buttons.js"></script>-->
+    <script async defer src="js/buttons.js"></script>
     <title>
 
         About - 何智强 | Blog
@@ -36,8 +39,10 @@
 
     <!-- Pygments Highlight CSS -->
 
-    <link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
-    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">
+    <!--<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">-->
+    <link rel="stylesheet" href="css/github.min.css">
+    <!--<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">-->
+    <script src="js/highlight.min.js">
         // highlight
         hljs.initHighlightingOnLoad();
     </script>
@@ -75,7 +80,7 @@
     header.intro-header {
         background-image: url('https://cn-cliveh-bucket-1256393662.cos.ap-guangzhou.myqcloud.com/article_header/about1.png')
         /*page*/
-        <%--${pageContext.request.contextPath}/img/header_img/about.jpg--%>
+    <%--${pageContext.request.contextPath}/img/header_img/about.jpg--%>
 
     }
 
@@ -150,6 +155,9 @@
                     <li>
                         <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/fc/">怀旧游戏机</a>
+                    </li>
 
                 </ul>
             </div>
@@ -212,13 +220,13 @@
             </blockquote>
             <h3 id="兴趣方向">兴趣方向</h3>
             <blockquote>
-                <p>WEB，大数据，Python</p>
+                <p>WEB，大数据，Python，Linux</p>
             </blockquote>
             <h3 id="联系我">联系我</h3>
             <blockquote>
                 <p>Email: <a href="mailto:clivehe08@gmail.com" target="_blank" rel="noopener">clivehe08@gmail.com</a>
-                <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="mailto:157412086@qq.com" target="_blank" rel="noopener">157412086@qq.com</a>
+                    <!-- <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="mailto:157412086@qq.com" target="_blank" rel="noopener">157412086@qq.com</a> -->
                 </p>
             </blockquote>
 

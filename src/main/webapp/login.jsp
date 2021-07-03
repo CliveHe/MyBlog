@@ -41,6 +41,18 @@
 
     <script>
         window.onload = function () {
+            $.ajax({
+                url:'getBingImgUrl',
+                type:'get',
+                success:function(data){
+                    $("body").attr("background",data);
+
+                },
+                error:function (e) {
+                    alert("必应每日一图获取失败")
+                }
+            });
+
             //表单提交绑定onsubmit事件
             document.getElementById("form").onsubmit = function () {
                 //调用用户名校验方法
@@ -335,22 +347,6 @@
 </div> <!-- /container -->
 
 </body>
-
-<script>
-    //必应每日一图
-    $.ajax({
-        url:'getBingImgUrl',
-        type:'get',
-        success:function(data){
-            $("body").attr("background",data);
-
-        },
-        error:function (e) {
-            alert("必应每日一图获取失败")
-        }
-    });
-
-</script>
 
 <%--<footer class="navbar-fixed-bottom">
     <div class="row company ">

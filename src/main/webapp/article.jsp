@@ -9,13 +9,14 @@
 <html>
 <!-- Head tag -->
 <head>
-    <meta name="generator" content="Hexo 3.8.0">
+    <meta name="keywords" content="${article.articleTitle},<c:forEach items="${article.tags}" var="tags">${tags.tagName},</c:forEach>何智强">
+    <meta name="description" content="${article.articleTitle},${article.articleAbstract},何智强的个人博客,cliveh.cn,Clive' Blog,cliveh,何智强">
+    <meta name="author" content="何智强,cliveh.cn">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword" content="">
     <link rel="shortcut icon" href="img/icon.jpg">
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="js/buttons.js"></script>
@@ -43,15 +44,18 @@
     <link rel="stylesheet" href="css/donate.css">
 
     <!-- Pygments Highlight CSS -->
-    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+    <!--<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">-->
+    <link href="css/monokai_sublime.min.css" rel="stylesheet">
+    <!--<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>-->
+    <script src="js/8.0/highlight.min.js"></script>
     <script >hljs.initHighlightingOnLoad();</script>
 
-<%--<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
-    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">
-        // highlight
-        hljs.initHighlightingOnLoad();
-    </script>--%>
+    <%--<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+        <!--<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js">-->
+        <script src="js/highlight.min.js">
+            // highlight
+            hljs.initHighlightingOnLoad();
+        </script>--%>
 
     <link rel="stylesheet" href="css/highlight.css">
     <link rel="stylesheet" href="editormd/css/editormd.min.css"/>
@@ -108,7 +112,7 @@
     header.intro-header {
         background-image: url('${article.articleImageUrl}')
         /*post*/
-        <%--${pageContext.request.contextPath}/img/article_header/article_bg.jpg--%>
+    <%--${pageContext.request.contextPath}/img/article_header/article_bg.jpg--%>
 
     }
 
@@ -191,7 +195,9 @@
                     <li>
                         <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
                     </li>
-
+                    <li>
+                        <a href="${pageContext.request.contextPath}/fc/">怀旧游戏机</a>
+                    </li>
 
                 </ul>
             </div>
@@ -340,11 +346,11 @@
 
                         <form id="form1" action="" method="post">
                             <div class="vheader item3">
-                                <input name="username" placeholder="昵称" class="vnick vinput" type="text"><input
-                                    name="email" placeholder="邮箱" class="vmail vinput" type="email"><input name="link"
-                                                                                                          placeholder="网址(http://)"
-                                                                                                          class="vlink vinput"
-                                                                                                          type="text">
+                                <input id="username" name="username" placeholder="昵称" class="vnick vinput" type="text"><input
+                                    id="email" name="email" placeholder="邮箱" class="vmail vinput" type="email"><input name="link"
+                                                                                                                      placeholder="网址(http://)"
+                                                                                                                      class="vlink vinput"
+                                                                                                                      type="text">
                             </div>
                             <div class="vedit">
                                 <textarea name="commentContent" id="veditor" class="veditor vinput" placeholder="ヾﾉ≧∀≦)o来啊，快活啊!"></textarea>
@@ -391,7 +397,7 @@
                                 </div>
                                 <div class="vmeta">
                                     <span class="vtime" style="font-size: 12px">${comment.commentDate}</span>
-                                    <%--<span class="vat" style="font-size: 16px">回复</span>--%>
+                                        <%--<span class="vat" style="font-size: 16px">回复</span>--%>
                                 </div>
                                 <div class="vcontent" style="font-size: 14px">
                                     <p>${comment.commentContent}</p>
@@ -451,9 +457,9 @@
                     <ol class="toc-nav">
 
                         <%--jquery动态生成目录--%>
-                            <li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#"><span
-                                    class="toc-nav-number">1.</span> <span class="toc-nav-text">格式不对，请使用H2为目录标题</span></a>
-                            </li>
+                        <li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#"><span
+                                class="toc-nav-number">1.</span> <span class="toc-nav-text">格式不对，请使用H2为目录标题</span></a>
+                        </li>
 
                     </ol>
 
@@ -509,59 +515,70 @@
     $(function () {
         $(".vsubmit").click(function () {
 
-            $.ajax({
-                url:'${pageContext.request.contextPath}/saveComment'+'?t='+Math.random(),
-                data:$('#form1').serialize(),                 //将表单数据序列化，格式为name=value
-                type:'POST',
-                dataType:'json',
-                cache: false,
-                success:function(data){
-                    //删除vempty
-                    $(".vempty").remove();
-                    //success
-                    var commentContent = data.commentContent;
-                    var commentDate = data.commentDate;
-                    var user = data.user;
-                    var url =  user.websiteUrl;
+            var username = $("#username").val();
+            var email = $("#email").val();
 
-                    var item = "";
-                    //$(".vlist").empty();
+            if (username==="" && email===""){
 
-                    //判断网址是否有http://，https://开头
-                    var str = new RegExp("//");
-                    if (str.test(url)){
-                        item += '<div class="vcard" id="5d6ff4f3c8959c0068e6ab1b"><img class="vimg" style="width: 50px;height: 50px" src="https://cn-cliveh-bucket-1256393662.cos.ap-guangzhou.myqcloud.com/img/20150811135126_hscVy.thumb.224_0.gif">\n' +
-                            '            <div class="vh" rootid="5d6ff4f3c8959c0068e6ab1b">\n' +
-                            '                <div class="vhead"><a href="'+user.websiteUrl+'" target="_blank"><span class="vnick" style="font-size: 16px">'+user.username+'</span></a> <span class="vsys" style="display: inline-block;padding: .2rem .5rem;background: #ededed;color: #b3b1b1;font-size: .75rem;border-radius: .2rem;margin-right: .3rem;font-size: 10px">'+user.address+'</span></div>\n' +
-                            '                <div class="vmeta">\n' +
-                            '                    <span class="vtime" style="font-size: 12px">'+commentDate+'</span>\n' +
-                            '                    <span class="vat" style="font-size: 16px">回复</span>\n' +
-                            '                </div>\n' +
-                            '                <div class="vcontent" style="font-size: 14px">\n' +
-                            '                    <p>'+commentContent+'</p>\n' +
-                            '                </div>\n' +
-                            '            </div></div>';
-                    }else {
-                        item += '<div class="vcard" id="5d6ff4f3c8959c0068e6ab1b"><img class="vimg" style="width: 50px;height: 50px" src="https://cn-cliveh-bucket-1256393662.cos.ap-guangzhou.myqcloud.com/img/20150811135126_hscVy.thumb.224_0.gif">\n' +
-                            '            <div class="vh" rootid="5d6ff4f3c8959c0068e6ab1b">\n' +
-                            '                <div class="vhead"><a href="http://'+user.websiteUrl+'" target="_blank"><span class="vnick" style="font-size: 16px">'+user.username+'</span></a> <span class="vsys" style="display: inline-block;padding: .2rem .5rem;background: #ededed;color: #b3b1b1;font-size: .75rem;border-radius: .2rem;margin-right: .3rem;font-size: 10px">'+user.address+'</span></div>\n' +
-                            '                <div class="vmeta">\n' +
-                            '                    <span class="vtime" style="font-size: 12px">'+commentDate+'</span>\n' +
-                            '                    <span class="vat" style="font-size: 16px">回复</span>\n' +
-                            '                </div>\n' +
-                            '                <div class="vcontent" style="font-size: 14px">\n' +
-                            '                    <p>'+commentContent+'</p>\n' +
-                            '                </div>\n' +
-                            '            </div></div>';
+                alert("昵称和邮箱不能为空！")
+
+            }else {
+
+                $.ajax({
+                    url:'${pageContext.request.contextPath}/saveComment'+'?t='+Math.random(),
+                    data:$('#form1').serialize(),                 //将表单数据序列化，格式为name=value
+                    type:'POST',
+                    dataType:'json',
+                    cache: false,
+                    success:function(data){
+                        //删除vempty
+                        $(".vempty").remove();
+                        //success
+                        var commentContent = data.commentContent;
+                        var commentDate = data.commentDate;
+                        var user = data.user;
+                        var url =  user.websiteUrl;
+
+                        var item = "";
+                        //$(".vlist").empty();
+
+                        //判断网址是否有http://，https://开头
+                        var str = new RegExp("//");
+                        if (str.test(url)){
+                            item += '<div class="vcard" id="5d6ff4f3c8959c0068e6ab1b"><img class="vimg" style="width: 50px;height: 50px" src="https://cn-cliveh-bucket-1256393662.cos.ap-guangzhou.myqcloud.com/img/20150811135126_hscVy.thumb.224_0.gif">\n' +
+                                '            <div class="vh" rootid="5d6ff4f3c8959c0068e6ab1b">\n' +
+                                '                <div class="vhead"><a href="'+user.websiteUrl+'" target="_blank"><span class="vnick" style="font-size: 16px">'+user.username+'</span></a> <span class="vsys" style="display: inline-block;padding: .2rem .5rem;background: #ededed;color: #b3b1b1;font-size: .75rem;border-radius: .2rem;margin-right: .3rem;font-size: 10px">'+user.address+'</span></div>\n' +
+                                '                <div class="vmeta">\n' +
+                                '                    <span class="vtime" style="font-size: 12px">'+commentDate+'</span>\n' +
+                                '                    <span class="vat" style="font-size: 16px">回复</span>\n' +
+                                '                </div>\n' +
+                                '                <div class="vcontent" style="font-size: 14px">\n' +
+                                '                    <p>'+commentContent+'</p>\n' +
+                                '                </div>\n' +
+                                '            </div></div>';
+                        }else {
+                            item += '<div class="vcard" id="5d6ff4f3c8959c0068e6ab1b"><img class="vimg" style="width: 50px;height: 50px" src="https://cn-cliveh-bucket-1256393662.cos.ap-guangzhou.myqcloud.com/img/20150811135126_hscVy.thumb.224_0.gif">\n' +
+                                '            <div class="vh" rootid="5d6ff4f3c8959c0068e6ab1b">\n' +
+                                '                <div class="vhead"><a href="http://'+user.websiteUrl+'" target="_blank"><span class="vnick" style="font-size: 16px">'+user.username+'</span></a> <span class="vsys" style="display: inline-block;padding: .2rem .5rem;background: #ededed;color: #b3b1b1;font-size: .75rem;border-radius: .2rem;margin-right: .3rem;font-size: 10px">'+user.address+'</span></div>\n' +
+                                '                <div class="vmeta">\n' +
+                                '                    <span class="vtime" style="font-size: 12px">'+commentDate+'</span>\n' +
+                                '                    <span class="vat" style="font-size: 16px">回复</span>\n' +
+                                '                </div>\n' +
+                                '                <div class="vcontent" style="font-size: 14px">\n' +
+                                '                    <p>'+commentContent+'</p>\n' +
+                                '                </div>\n' +
+                                '            </div></div>';
+                        }
+
+                        $(".vlist").prepend(item);   // 显示到前面
+                    },
+                    error:function(){
+                        console.log("提交ajax函数异常");
                     }
 
-                    $(".vlist").prepend(item);   // 显示到前面
-                },
-                error:function(){
-                    console.log("提交ajax函数异常");
-                }
+                });
 
-            });
+            }
 
         })
     })
@@ -596,7 +613,7 @@
 <%--<script color="0,0,255" opacity='0.6' count="200" src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>--%>
 
 <!-- 音乐播放器 -->
-<link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+<!--<link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
 <style>
     li {margin: 0em 0;}
     button {min-height: 0px;}
@@ -609,7 +626,7 @@
 </style>
 <div id="aplayer" class="aplayer" data-id="38917139" data-server="netease" data-type="playlist" data-fixed="true" ></div>
 <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
-<script src="https://unpkg.com/meting@1.2/dist/Meting.min.js"></script>
+<script src="https://unpkg.com/meting@1.2/dist/Meting.min.js"></script>-->
 <!-- 音乐播放器end -->
 
 <!-- 来必力City版公共JS代码 start (一个网页只需插入一次) -->
