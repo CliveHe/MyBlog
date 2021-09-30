@@ -49,7 +49,7 @@ public class CommentController {
             user.setUsername(username);
             user.setEmail(email);
             user.setWebsiteUrl(link);
-            user.setAddress(AddressUtil.getAddress(request));
+//            user.setAddress(AddressUtil.getAddress(request));
             //0为普通用户
             user.setRole(0);
             user.setRegisterTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));

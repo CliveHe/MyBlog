@@ -380,7 +380,7 @@
 <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
 <script type="text/javascript" src="js/toc.js?v=1.0.0" async=""></script>
 <!--单击显示文字-->
-<script type="text/javascript" src="js/click_show_text.js"></script>
+<%--<script type="text/javascript" src="js/click_show_text.js"></script>--%>
 <!-- Image to hack wechat -->
 <!-- <img src="http://cliveh.cn/img/icon_wechat.png" width="0" height="0" /> -->
 <!-- Migrate from head to bottom, no longer block render and still work -->

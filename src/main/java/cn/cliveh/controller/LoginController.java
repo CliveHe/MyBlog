@@ -150,7 +150,7 @@ public class LoginController {
         //参数一：长
         //参数二：宽
         //参数三：颜色
-        int width = 80;
+        int width = 90;
         int height = 30;
         //创建BufferedImage对象，在内存中图片（验证码图片对象）
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

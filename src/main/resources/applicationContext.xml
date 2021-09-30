@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!-- 组件扫描配置，配置扫描注解,不扫描@Controller注解 -->
-    <context:component-scan base-package="cn.cliveh">
+    <context:component-scan base-package="cn">
         <!--排除Controller注解-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>

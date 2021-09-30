@@ -95,6 +95,7 @@
 
                         <br>
                         <span id="weather"></span>
+<%--                        <div id="he-plugin-standard"></div>--%>
 
                     </div>
 
@@ -445,30 +446,85 @@
 <script src="js/hux-blog.min.js"></script>
 
 <%--加载天气--%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.0.0/font/qweather-icons.css">
 <script>
 
     //第一次加载页面时
-    if ("${todayWeather}"===""){
+    <%--if ("${todayWeather}"===""){--%>
 
-        $("#weather").html("正在加载天气预报....<br>");
+    <%--    $("#weather").html("正在加载天气预报....<br>");--%>
 
-        //页面加载1000毫秒后执行一次
-        setTimeout(function () {
-            //refresh值为no就不刷新
-            if ($.cookie('refresh')!="no"){
-                $.cookie('refresh','no');
-                //刷新当前页面
-                location.reload();
-            }else {
-                $("#weather").remove()
-            }
-        },1000)
+    <%--    //页面加载1000毫秒后执行一次--%>
+    <%--    setTimeout(function () {--%>
+    <%--        //refresh值为no就不刷新--%>
+    <%--        if ($.cookie('refresh')!="no"){--%>
+    <%--            $.cookie('refresh','no');--%>
+    <%--            //刷新当前页面--%>
+    <%--            location.reload();--%>
+    <%--        }else {--%>
+    <%--            $("#weather").remove()--%>
+    <%--        }--%>
+    <%--    },1000)--%>
 
-    }else {
-        $("#weather").html("${todayWeather}<br>${tomorrowWeather}")
-    }
+    <%--}else {--%>
+    <%--    $("#weather").html("${todayWeather}<br>${tomorrowWeather}")--%>
+    <%--}--%>
+
+    $.ajax({
+        type: "GET",
+        url: "${pageContext.request.contextPath}/locationId",
+        cache: false, //不缓存此页面
+        success: function (locationId) {
+            $.ajax({
+                type: "GET",
+                url: "https://devapi.qweather.com/v7/weather/now?location="+locationId+"&key=cc6c4b3fa162479b8b1b69ad79319f1d",
+                cache: false, //不缓存此页面
+                success: function (data) {
+                    if(data.code == 200) {
+                        // now.temp℃ 体感now.feelsLike℃ now.text 风速now.windSpeed公里/小时 相对湿度now.humidity%  当前小时累计降水量now.precip毫米 云量now.cloud%
+                        $("#weather").html('<i class="qi-'+data.now.icon+'"></i> 现在温度'+data.now.temp+"℃ 体感"+data.now.feelsLike+"℃ "+data.now.text+" 风速"+data.now.windSpeed+"公里/小时 相对湿度"+data.now.humidity+"% 当前小时累计降水量"+data.now.precip+"毫米 云量"+data.now.cloud+"%");
+
+                    }
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: "https://devapi.qweather.com/v7/weather/3d?location="+locationId+"&key=cc6c4b3fa162479b8b1b69ad79319f1d",
+                cache: false, //不缓存此页面
+                success: function (data) {
+                    if(data.code == 200) {
+                        const tomorrow = data.daily[1];
+                        // 明日tomorrow.fxDate 日出日落tomorrow.sunrise~tomorrow.sunset 月升月落tomorrow.moonrise~tomorrow.moonset 月相tomorrow.moonPhase 温度tomorrow.tempMin~tomorrow.tempMax 预报白天tomorrow.textDay tomorrow.iconDay 风向tomorrow.windDirDay 风力等级tomorrow.windScaleDay 风速tomorrow.windSpeedDay公里/小时 夜间tomorrow.textNight tomorrow.iconNight 风向tomorrow.windDirNight 风力等级tomorrow.windScaleNight 风速tomorrow.windSpeedNight公里/小时 当天总降水量tomorrow.precip毫米 紫外线强度tomorrow.uvIndex 相对湿度tomorrow.humidity% 能见度tomorrow.vis公里
+                        // $("#weather").append("<br>明日 "+tomorrow.fxDate+" 日出日落"+tomorrow.sunrise+"~"+tomorrow.sunset+" 月升月落"+tomorrow.moonrise+"~"+tomorrow.moonset+" 月相"+tomorrow.moonPhase+" 温度"+tomorrow.tempMin+"℃~"+tomorrow.tempMax+"℃");
+                        // $("#weather").append(" 总降水量"+tomorrow.precip+"毫米 紫外线强度"+tomorrow.uvIndex+" 相对湿度"+tomorrow.humidity+"% 能见度"+tomorrow.vis+"公里 云量"+tomorrow.cloud+"%");
+                        $("#weather").append("<br>"+'<i class="qi-'+tomorrow.iconDay+'"></i> '+"预报明日白天："+tomorrow.textDay+" "+tomorrow.windDirDay+" 风力等级"+tomorrow.windScaleDay+"级 风速"+tomorrow.windSpeedDay+"公里/小时<br>"+'<i class="qi-'+tomorrow.iconNight+'"></i> '+"预报明日夜间："+tomorrow.textNight+" "+tomorrow.windDirNight+" 风力等级"+tomorrow.windScaleNight+"级 风速"+tomorrow.windSpeedNight+"公里/小时");
+                        $("#weather").append("<br>明日总降水量"+tomorrow.precip+"毫米 紫外线强度"+tomorrow.uvIndex+" 相对湿度"+tomorrow.humidity+"% 能见度"+tomorrow.vis+"公里 云量"+tomorrow.cloud+"%");
+
+                    }
+                }
+            });
+        }
+    });
 
 </script>
+<%--<script>--%>
+<%--    WIDGET = {--%>
+<%--        "CONFIG": {--%>
+<%--            "layout": "1",--%>
+<%--            "height": "120",--%>
+<%--            "background": "5",--%>
+<%--            "dataColor": "FFFFFF",--%>
+<%--            "key": "9ab809fbe9ec4f0dab6f5d4de8447aeb"--%>
+<%--        }--%>
+<%--    }--%>
+<%--</script>--%>
+<%--<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>--%>
+<%--<script>--%>
+<%--    console.log(执行了, $("#he-plugin-standard"));--%>
+<%--    $("#he-plugin-standard").css("text-align","center");--%>
+<%--    // $("#he-plugin-standard").css("width","100%");--%>
+<%--    $(".wv-v-h-location").remove();--%>
+<%--</script>--%>
 
 <!-- async load function -->
 <script>
@@ -560,7 +616,7 @@
 <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
 <script type="text/javascript" src="js/toc.js?v=1.0.0" async=""></script>
 <!--单击显示文字-->
-<script type="text/javascript" src="js/click_show_text.js"></script>
+<%--<script type="text/javascript" src="js/click_show_text.js"></script>--%>
 <!-- Image to hack wechat -->
 <!-- <img src="http://cliveh.cn/img/icon_wechat.png" width="0" height="0" /> -->
 <!-- Migrate from head to bottom, no longer block render and still work -->

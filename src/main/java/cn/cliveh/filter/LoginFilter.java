@@ -14,7 +14,7 @@ import java.util.List;
  * @author CliveH
  * @date 2019/07/19
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
+//@WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     @Override
     public void destroy() {
@@ -50,6 +50,7 @@ public class LoginFilter implements Filter {
         pathList.add("/img/");
         pathList.add("/editormd/");
         pathList.add("/fonts/");
+        pathList.add("/locationId");
 
         //获取资源请求路径
         String uri = request.getRequestURI();

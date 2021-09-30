@@ -1,5 +1,7 @@
 package cn.cliveh.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,7 +11,6 @@ import java.util.concurrent.Callable;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -21,6 +22,8 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @date 2019/8/24
  */
 public class RedisCache implements Cache {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private RedisTemplate<String, Object> redisTemplate;
     private String name;
@@ -49,7 +52,7 @@ public class RedisCache implements Cache {
 
     @Override
     public ValueWrapper get(Object key) {
-        System.out.println("get key");
+        log.debug("get key: {}", key);
         final String keyf = key.toString();
         Object object = null;
         object = redisTemplate.execute(new RedisCallback<Object>() {
@@ -69,7 +72,7 @@ public class RedisCache implements Cache {
 
     @Override
     public void put(Object key, Object value) {
-        System.out.println("put key");
+        log.debug("put key: {} \nvalue: {}", key, value);
         final String keyf = key.toString();
         final Object valuef = value;
         final long liveTime = 86400;
@@ -122,7 +125,7 @@ public class RedisCache implements Cache {
 
     @Override
     public void evict(Object key) {
-        System.out.println("del key");
+        log.debug("del key: {}", key);
         final String keyf = key.toString();
         redisTemplate.execute(new RedisCallback<Long>() {
             @Override
@@ -136,7 +139,7 @@ public class RedisCache implements Cache {
     @Override
     public void clear() {
 
-        System.out.println("clear key");
+        log.debug("clear key");
         redisTemplate.execute(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection)

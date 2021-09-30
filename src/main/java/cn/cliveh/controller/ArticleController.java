@@ -6,16 +6,20 @@ import cn.cliveh.domain.Comment;
 import cn.cliveh.service.ArticleService;
 import cn.cliveh.service.CommentService;
 import cn.cliveh.service.TagsService;
+import cn.cliveh.service.WeatherService;
+import cn.cliveh.util.AddressUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,13 +41,16 @@ public class ArticleController {
     @Autowired
     private CommentService commentService;
 
+//    @Autowired
+//    private WeatherService weatherService;
+
     /**
      * @param model
      * @param pageNo
      * @return
      */
     @RequestMapping("/home")
-    public String findAllArticle(Model model, @RequestParam(defaultValue = "1", required = true, value = "pageNo") Integer pageNo) {
+    public String findAllArticle(Model model, @RequestParam(defaultValue = "1", required = true, value = "pageNo") Integer pageNo, HttpServletRequest request) {
 
         if (pageNo < 1) {
             pageNo = 1;
@@ -58,6 +65,15 @@ public class ArticleController {
 
         //调用service的分页方法获取文章分页信息
         PageInfo<Article> pageInfo = articleService.findAllArticleByPage(pageNo);
+
+        //session存放天气信息
+//        HttpSession session = request.getSession(true);
+//        if (session.getAttribute("todayWeather") == null || session.getAttribute("tomorrowWeather") == null) {
+//
+//            //异步调用天气服务
+//            weatherService.getWeather(request, session);
+//
+//        }
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPage", totalPage);

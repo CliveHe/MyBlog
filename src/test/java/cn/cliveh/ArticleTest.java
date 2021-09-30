@@ -25,6 +25,7 @@ import java.util.Scanner;
  * @version 1.1
  * @date 2019/7/15
  */
+/*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class ArticleTest {
@@ -41,15 +42,17 @@ public class ArticleTest {
     @Autowired
     private ArticleService articleService;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+    //@Autowired
+    //private RedisTemplate redisTemplate;
 
     @Test
     public void findAllArticle() {
-        /*PageInfo<Article> allArticles = articleService.findAllArticleByPage(2);
+        */
+/*PageInfo<Article> allArticles = articleService.findAllArticleByPage(2);
         for (Article allArticle : allArticles) {
             System.out.println(allArticle);
-        }*/
+        }*//*
+
         //PageInfo<Article> allArticle = articleService.findAllArticleByPage(3);
         //System.out.println(allArticle);
     }
@@ -109,7 +112,7 @@ public class ArticleTest {
         }
     }
 
-    @Test
+    //@Test
     public void testRedis(){
         String views = articleService.updateRedisArticleViewsById(31);
         System.out.println(views);
@@ -123,7 +126,7 @@ public class ArticleTest {
         }
     }
 
-    @Test
+    //@Test
     public void updateArticleViews(){
         List<Integer> allArticleId = articleService.findAllArticleId();
         for (Integer articleId : allArticleId) {
@@ -135,3 +138,4 @@ public class ArticleTest {
 
 
 }
+*/
